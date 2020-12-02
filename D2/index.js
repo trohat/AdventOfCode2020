@@ -4,15 +4,12 @@ console.log("script working");
 
 data = data.split(String.fromCharCode(10));
 
+const re = /(\d+)-(\d+) ([a-z]): ([a-z]+)/
+
 data = data.map(d => {
-    const hyphen = d.indexOf("-");
-    const colon = d.indexOf(":");
-    const space = d.indexOf(" ");
+    const [ , low, high, condition, password ] = re.exec(d);
     return {
-        low: +d.slice(0, hyphen),
-        high: +d.slice(hyphen+1, space),
-        condition: d.slice(space+1, colon),
-        password: d.slice(colon+2)
+        low, high, condition, password
     }
 });
 
