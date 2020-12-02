@@ -1,29 +1,38 @@
 console.log("script working");
 
-//let data = inData();
+const splitLines = data => data.split(String.fromCharCode(10));
 
-data = data.split(String.fromCharCode(10));
+const prepare = data => {
+    const re = /(\d+)-(\d+) ([a-z]): ([a-z]+)/
+    return data.map(d => {
+        const [ , low, high, condition, password ] = re.exec(d);
+        return {
+            low, high, condition, password
+        }
+    });
+};
 
-const re = /(\d+)-(\d+) ([a-z]): ([a-z]+)/
+inputdata = prepare(splitLines(inputdata));
 
-data = data.map(d => {
-    const [ , low, high, condition, password ] = re.exec(d);
-    return {
-        low, high, condition, password
-    }
-});
-
-const result1 = data.reduce((accumulator, currentValue) =>  {
+const task1 = data => data.reduce((accumulator, currentValue) =>  {
     let count = currentValue.password.split(currentValue.condition).length-1;
     if (count >= currentValue.low && count <= currentValue.high) return accumulator + 1;
     return accumulator;
 },0);
 
-const result2 = data.reduce((accumulator, currentValue) =>  {
+const task2 = data => data.reduce((accumulator, currentValue) =>  {
     let firstChar = currentValue.password.charAt(currentValue.low - 1);
     let secondChar = currentValue.password.charAt(currentValue.high - 1);
     return accumulator + (firstChar === currentValue.condition ^ secondChar === currentValue.condition);
 },0);
 
-console.log("Task 1: " + result1);
-console.log("Task 2: " + result2);
+const testdata = prepare(splitLines(`1-3 a: abcde
+                                     1-3 b: cdefg
+                                     2-9 c: ccccccccc`));
+
+expect(task1(testdata)).toEqual(2);
+
+expect(task2(testdata)).toEqual(1);
+
+console.log("Task 1: " + task1(inputdata));
+console.log("Task 2: " + task2(inputdata));
