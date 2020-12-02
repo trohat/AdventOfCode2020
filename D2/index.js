@@ -30,9 +30,9 @@ const testdata = prepare(splitLines(`1-3 a: abcde
                                      1-3 b: cdefg
                                      2-9 c: ccccccccc`));
 
-expect(task1(testdata)).toEqual(2);
+doEqualTest(task1(testdata), 2);
 
-expect(task2(testdata)).toEqual(1);
+doEqualTest(task2(testdata), 1);
 
 console.log("Task 1: " + task1(inputdata));
 console.log("Task 2: " + task2(inputdata));

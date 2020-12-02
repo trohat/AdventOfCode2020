@@ -37,9 +37,9 @@ const testdata = prepare(
               1456`)
 );
 
-expect(task1(testdata)).toEqual(514579);
+doEqualTest(task1(testdata), 514579);
 
-expect(task2(testdata)).toEqual(241861950);
+doEqualTest(task2(testdata), 241861950);
 
 console.log("Task 1: " + task1(inputdata));
 console.log("Task 2: " + task2(inputdata));
