@@ -5,25 +5,24 @@ const splitLines = (data) => data.split(String.fromCharCode(10));
 const re = /(\w{3}) ([-+])(\d+)/;
 const prepare = (data) =>
   data.map((d) => {
-    const [, instruction, sign, number] = re.exec(d);
+    const [, text, sign, number] = re.exec(d);
     return {
-      instruction,
+      text,
       sign,
       number: +number,
-      visited: false
+      visited: false,
     };
   });
 
 inputdata = prepare(splitLines(inputdata));
 
-//console.log(inputdata);
-
-const task1 = (program) => {
+const runProgram = (program) => {
   let position = 0;
   let accumulator = 0;
   let end = false;
+  let found = false;
   while (!end) {
-    switch (program[position].instruction) {
+    switch (program[position].text) {
       case "acc":
         program[position].visited = true;
         if (program[position].sign === "+")
@@ -44,15 +43,30 @@ const task1 = (program) => {
         position += 1;
         break;
     }
-    if (program[position].visited)
-        end = true;
-    //console.log(position, accumulator);
-    //console.table(program);
+    if (position >= program.length) {
+      found = accumulator;
+      end = true;
+    } else if (program[position].visited) {
+      end = true;
+    }
   }
-  return accumulator;
+  return found;
 };
 
-const task2 = (data) => {};
+const task2 = (program) => {
+  let final = 0;
+  program.forEach((instruction, index) => {
+    let actProgram = [];
+    program.forEach((i) => actProgram.push({ ...i }));
+    if (instruction.text === "jmp")
+      actProgram[index] = { ...actProgram[index], text: "nop" };
+    else if (instruction.text === "nop")
+      actProgram[index] = { ...actProgram[index], text: "jmp" };
+    const result = runProgram(actProgram);
+    if (result) final = result;
+  });
+  return final;
+};
 
 let testdata = `nop +0
 acc +1
@@ -66,14 +80,12 @@ acc +6`;
 
 testdata = prepare(splitLines(testdata));
 
-console.table(testdata);
+//doEqualTest(runProgram(testdata), 5);
 
-doEqualTest(task1(testdata), 5);
-
-console.log("Task 1: " + task1(inputdata));
+//console.log("Task 1: " + runProgram(inputdata));
 
 console.log("");
 
-//doEqualTest(task2(testdata), 336);
+doEqualTest(task2(testdata), 8);
 
-//console.log("Task 2: " + task2(inputdata));
+console.log("Task 2: " + task2(inputdata));
