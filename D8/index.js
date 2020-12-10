@@ -2,13 +2,12 @@ console.log("funguju");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 
-const re = /(\w{3}) ([-+])(\d+)/;
+const re = /(\w{3}) ([-+]\d+)/;
 const prepare = (data) =>
   data.map((d) => {
-    const [, text, sign, number] = re.exec(d);
+    const [, text, number] = re.exec(d);
     return {
       text,
-      sign,
       number: +number,
       visited: false,
     };
@@ -22,24 +21,16 @@ const runProgram = (program) => {
   let end = false;
   let found = false;
   while (!end) {
+    program[position].visited = true;
     switch (program[position].text) {
       case "acc":
-        program[position].visited = true;
-        if (program[position].sign === "+")
-          accumulator += program[position].number;
-        else if (program[position].sign === "-")
-          accumulator -= program[position].number;
+        accumulator += program[position].number;
         position += 1;
         break;
       case "jmp":
-        program[position].visited = true;
-        if (program[position].sign === "+")
-          position += program[position].number;
-        else if (program[position].sign === "-")
-          position -= program[position].number;
+        position += program[position].number;
         break;
       case "nop":
-        program[position].visited = true;
         position += 1;
         break;
     }
