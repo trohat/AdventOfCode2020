@@ -18,7 +18,7 @@ String.prototype.setCharAt = function(index, char) {
 
 const countCharInArray = (char, array) => array.reduce((accumulator, str) => accumulator + str.split(char).length-1, 0);
 
-const task1 = (grid) => {
+const task2 = (grid) => {
     const maxY = grid.length;
 
     const countNeighbours = ( x,y, grid ) => {
@@ -39,15 +39,35 @@ const task1 = (grid) => {
         return n;
     }
 
+    const countVisibles = ( x,y, grid ) => {
+        const directions = [[-1,-1], [-1,0], [-1,1], [0, -1], [0, 1], [1,-1], [1,0], [1,1]];
+        let n = 0;
+        directions.forEach(dir => {
+            actX = x;
+            actY = y;
+            while (true) {
+                actX += dir[0];
+                actY += dir[1];
+                if (!(actY in grid)) break;
+                if (actX < 0 || actX >= grid[0].length) break;
+                let seat = grid[actY].charAt(actX);
+                if (seat === ".") continue;
+                n += (seat === "#");
+                break;
+            }
+        })
+        return n;
+    }
+
     let end = false;
     while (!end) {
         let lastGrid = [...grid];
         grid = grid.map( (line, index) => {
             for (let i = 0; i < line.length; i++) {
                 let seat = line.charAt(i);
-                const n = countNeighbours(i, index, lastGrid);
+                const n = countVisibles(i, index, lastGrid);
                 if (seat === "L" && n === 0) line = line.setCharAt(i, "#");
-                if (seat === "#" && n >= 4) line = line.setCharAt(i, "L");
+                if (seat === "#" && n >= 5) line = line.setCharAt(i, "L");
             }
             return line;
         })
@@ -55,10 +75,6 @@ const task1 = (grid) => {
     }
     return countCharInArray('#', grid);
 };
-
-const task2 = data => {
- 
-}
 
 let testdata = `L.LL.LL.LL
 LLLLLLL.LL
@@ -75,12 +91,12 @@ testdata = splitLines(testdata);
 
 console.log("");
 
-doEqualTest(task1(testdata), 37);
+//doEqualTest(task1(testdata), 37);
 
-console.log("Task 1: " + task1(inputdata));
+//console.log("Task 1: " + task1(inputdata));
 
 console.log("");
 
-//doEqualTest(task2(testdata), 336);
+doEqualTest(task2(testdata), 26);
 
-//console.log("Task 2: " + task2(inputdata));
+console.log("Task 2: " + task2(inputdata));
