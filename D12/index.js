@@ -13,10 +13,11 @@ inputdata = prepare(splitLines(inputdata));
 
 console.log(inputdata);
 
-const task1 = (data) => {
-  let posX = 0;
-  let posY = 0;
-  let dir = 0;
+const task2 = (data) => {
+  let wPosX = 10;
+  let wPosY = -1;
+  let shipPosX = 0;
+  let shipPosY = 0;
 
   const directions = [
       { where: "E", x: 1, y: 0},
@@ -24,40 +25,49 @@ const task1 = (data) => {
       { where: "W", x: -1, y: 0},
       { where: "N", x: 0, y: -1}];
 
-  let n;
+  let n, oldPosX, oldPosY;
   data.forEach((instr) => {
     switch (instr.letter) {
       case "N":
-        posY -= instr.number;
+        wPosY -= instr.number;
         break;
       case "S":
-        posY += instr.number;
+        wPosY += instr.number;
         break;
       case "E":
-        posX += instr.number;
+        wPosX += instr.number;
         break;
       case "W":
-        posX -= instr.number;
+        wPosX -= instr.number;
         break;
       case "R":
         n = instr.number / 90;
-        dir = (dir + n) % 4;
+        for (let i = 0; i < n; i++) {
+            oldPosX = wPosX;
+            oldPosY = wPosY;
+            wPosY = oldPosX;
+            wPosX = -oldPosY;
+        }
         break;
       case "L":
         n = instr.number / 90;
-        dir = (dir + 3 * n) % 4;
+        for (let i = 0; i < n; i++) {
+            oldPosX = wPosX;
+            oldPosY = wPosY;
+            wPosY = -oldPosX;
+            wPosX = oldPosY;
+        }
         break;
       case "F":
-        posX += directions[dir].x * instr.number;
-        posY += directions[dir].y * instr.number;
+        shipPosX += wPosX * instr.number;
+        shipPosY += wPosY * instr.number;
         break;
     }
+    console.log(wPosX, wPosY, shipPosX, shipPosY);
   });
-  console.log(posX, posY);
-  return Math.abs(posX) + Math.abs(posY);
+  console.log(shipPosX, shipPosY);
+  return Math.abs(shipPosX) + Math.abs(shipPosY);
 };
-
-const task2 = (data) => {};
 
 let testdata = `F10
 N3
@@ -69,12 +79,12 @@ testdata = prepare(splitLines(testdata));
 
 console.log("");
 
-doEqualTest(task1(testdata), 25);
+//doEqualTest(task1(testdata), 25);
 
-console.log("Task 1: " + task1(inputdata));
+//console.log("Task 1: " + task1(inputdata));
 
 console.log("");
 
-//doEqualTest(task2(testdata), 336);
+doEqualTest(task2(testdata), 286);
 
-//console.log("Task 2: " + task2(inputdata));
+console.log("Task 2: " + task2(inputdata));
