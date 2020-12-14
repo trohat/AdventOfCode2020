@@ -56,7 +56,7 @@ const task2 = (data) => {
       cycleLen = accumulator.number * currentBus.number;
       for (let i = accumulator.remainder; i < cycleLen; i += accumulator.number) {
         if (
-          i % accumulator.number === accumulator.remainder &&
+          //i % accumulator.number === accumulator.remainder &&   
           i % currentBus.number === currentBus.remainder
         )
           return { number: cycleLen, remainder: i };
