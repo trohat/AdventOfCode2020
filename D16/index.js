@@ -46,18 +46,17 @@ console.log(inputdata);
 const task1 = (data) => {
     const [ genericRules, tickets ] = data;
     let errorRate = 0;
-    ticketsLoop: for (let i = 0; i < tickets.length; i++) {
-        ticketLoop: for (let j = 0; j < tickets[i].length; j++) {
-            const n = tickets[i][j];
+    tickets.forEach( ticket => {
+        ticket.forEach(number => {
             let valid = false;
-            ruleLoop: for (let k = 0; k < genericRules.length; k++) {
-                if (n >= genericRules[k].from && n <= genericRules[k].to) {
+            genericRules.forEach( rule => {
+                if (number >= rule.from && number <= rule.to) {
                     valid = true;
-                }      
-            }
-            if (!valid) errorRate += n;
-        }
-    }
+                }  
+            });
+            if (!valid) errorRate += number;
+        })
+    })
     return errorRate;
 };
 
