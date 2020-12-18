@@ -5,7 +5,7 @@ const splitLines = (data) => data.split(String.fromCharCode(10));
 inputdata = splitLines(inputdata);
 
 const task1 = (data) => { 
-    const eval = expr => {
+    const customEval = expr => {
         
         let number = null;
         let lastOp;
@@ -48,23 +48,49 @@ const task1 = (data) => {
     
     data.forEach(line => {
         while (result = re.exec(line)) {
-            let n = eval(result[0].slice(1, result[0].length-1));
+            let n = customEval(result[0].slice(1, result[0].length-1));
             line = line.replace(re, n);
         }
-        sum += eval(line);
+        sum += customEval(line);
     })
 
     return sum;
 };
 
 const task2 = data => {
+    // WARNING!!
+    // DON'T USE EVAL FUNCTON IN YOUR PRODUCTION CODE
+    // IT'S NOT A GOOD PRACTICE!!
+    // MORE INFO E.G. HERE https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch1.md
+
+    const customEval = expr => {
+        const plusRe = /\d+ \+ \d+/;
+        while (result = plusRe.exec(expr)) {
+            let n = eval(result[0]);
+            expr = expr.replace(plusRe, n);
+        }
+        return eval(expr);
+    }
+    
+    const re = /\([ *+\d]+\)/;
+    let sum = 0;
+    
+    data.forEach(line => {
+        while (result = re.exec(line)) {
+            let n = customEval(result[0].slice(1, result[0].length-1));
+            line = line.replace(re, n);
+        }
+        sum += customEval(line);
+    })
+
+    return sum;
  
 }
 
 let testdata = `((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2`;
 
 testdata = splitLines(testdata);
-
+console.log(testdata);
 console.log("");
 
 doEqualTest(task1(testdata), 13632);
@@ -73,6 +99,6 @@ console.log("Task 1: " + task1(inputdata));
 
 console.log("");
 
-//doEqualTest(task2(testdata), 336);
+doEqualTest(task2(testdata), 23340);
 
-//console.log("Task 2: " + task2(inputdata));
+console.log("Task 2: " + task2(inputdata));
