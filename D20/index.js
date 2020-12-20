@@ -110,12 +110,15 @@ const finishPuzzle = (puzzleMap, tileMap) => {
 const findSeaMonsters = puzzle => {
     const findMonsters = puzzle => {
         let count = 0;
-        let str = puzzle.join("");
-        const reSeaMonster = /1.{77}1....11....11....111.{77}1..1..1..1..1..1/;
-        while (reSeaMonster.test(str)) {
-            let index = reSeaMonster.exec(str).index;
-            str = str.slice(index+1);
-            count++;
+        const reSeaMonsterSecondLine = /1....11....11....111/g;
+        const reSeaMonsterThirdLine = /1..1..1..1..1..1/y;
+        let match;
+        for (let i = 1; i < puzzle.length - 1; i++) {
+            while (match = reSeaMonsterSecondLine.exec(puzzle[i])) {
+                let index = match.index;
+                reSeaMonsterThirdLine.lastIndex = index + 1;
+                if (reSeaMonsterThirdLine.test(puzzle[i+1]) && puzzle[i-1].charAt(index + 18) === "1") count++;
+            } 
         }
         console.log("Monsters found:", count);
         if (count > best) best = count;
@@ -278,8 +281,8 @@ console.log("All tiles:")
 console.log(tileMap);
 //console.log(inputdata);
 
-//testdata = prepare(splitLines(testdata));
-//doEqualTest(task(testdata, "test"), 7);
+testdata = prepare(splitLines(testdata));
+doEqualTest(task(testdata, "test"), 273);
 
 console.log("");
 
