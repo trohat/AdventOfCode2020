@@ -110,8 +110,18 @@ const finishPuzzle = (puzzleMap, tileMap) => {
 const findSeaMonsters = puzzle => {
     const findMonsters = puzzle => {
         let count = 0;
+        let str = puzzle.join("");
+        const reSeaMonster = /1.{77}1....11....11....111.{77}1..1..1..1..1..1/;
+        while (reSeaMonster.test(str)) {
+            let index = reSeaMonster.exec(str).index;
+            str = str.slice(index+1);
+            count++;
+        }
         console.log("Monsters found:", count);
+        if (count > best) best = count;
     }
+
+    let best = 0;
 
     for (let i = 0; i < 4; i++) {
         findMonsters(puzzle);
@@ -124,6 +134,7 @@ const findSeaMonsters = puzzle => {
         findMonsters(puzzle);
         puzzle = puzzle.rotateRight();
     }
+    return best;
 }
 
 const task = (data, isTest) => {
@@ -190,7 +201,7 @@ const task = (data, isTest) => {
     } else {
         puzzleSize = 12;
         startingTile = 1511;
-        startingRotation = 0;
+        startingRotation = 0; // I dont want to rotate the first tile!
     }
     
     
@@ -204,6 +215,7 @@ const task = (data, isTest) => {
         puzzle.push([]);
         if (start) {
             start = false;
+            // start first row
             puzzle[i].push({ tile: startingTile, dir: startingRotation});
             //tileMap.get(startingTile).dir = startingRotation;
         } else {
@@ -251,29 +263,27 @@ const task = (data, isTest) => {
 
         }
     }
+    console.log("Tiles placed:");
     console.log(puzzle);
     
     const finishedPuzzle = finishPuzzle(puzzle, tileMap);
-    console.log("Counting #'s:", finishedPuzzle.countChar("1"));
-    findSeaMonsters(finishedPuzzle);
+    const counted = finishedPuzzle.countChar("1")
+    console.log("Counting #'s:", counted);
+    const best = findSeaMonsters(finishedPuzzle);
+    return counted - best * 15;
 };
 
 
-console.log("data here")
+console.log("All tiles:")
 console.log(tileMap);
 //console.log(inputdata);
 
-testdata = prepare(splitLines(testdata));
-doEqualTest(task(testdata, "test"), 7);
+//testdata = prepare(splitLines(testdata));
+//doEqualTest(task(testdata, "test"), 7);
 
 console.log("");
 
 
-//inputdata = prepare(splitLines(inputdata));
-//console.log("Task 1: " + task(inputdata));
+inputdata = prepare(splitLines(inputdata));
+console.log("Task 2: " + task(inputdata));
 
-console.log("");
-
-//doEqualTest(task2(testdata), 273);
-
-//console.log("Task 2: " + task2(inputdata));
