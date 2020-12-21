@@ -16,7 +16,7 @@ Codes from [Christmas coding event](https://adventofcode.com/2020).
 
 * String.prototype.setCharAt *(changes one char in array)* - day 11
 
-* countCharInArray *(count character occurrences in an array)* - day 11
+* countCharInArray *(counts character occurrences in an array)* - day 11
 
 * Array.prototype.countChar *(same as before, but now as a prototype method)* - day 20
 
