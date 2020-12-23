@@ -25,14 +25,16 @@ const task = (cups, cupsCount, repetitions, task) => {
         if (start) {
             firstCup = {
                 value: n,
-                next: null
+                next: null,
+                previous: null
             };
             lastCup = firstCup;
             start = false;
         } else {
             let cup = {
                 value: n,
-                next: null
+                next: null,
+                previous: lastCup
             }
             lastCup.next = cup;
             lastCup = cup;
@@ -41,12 +43,14 @@ const task = (cups, cupsCount, repetitions, task) => {
     for (let i = 10; i <= cupsCount; i++) {
         let cup = {
             value: i,
-            next: null
+            next: null,
+            previous: lastCup
         }
         lastCup.next = cup;
         lastCup = cup;
     }
     lastCup.next = firstCup;
+    firstCup.previous = lastCup;
 
     console.log(firstCup);
     //console.log(printCups(firstCup));
@@ -54,8 +58,11 @@ const task = (cups, cupsCount, repetitions, task) => {
 
     for (let i = 0; i < repetitions; i++) {
         let firstOfThree = currentCup.next;
-        let three = [ firstOfThree.value, firstOfThree.next.value, firstOfThree.next.next.value ];
-        currentCup.next = currentCup.next.next.next.next;
+        let secondOfThree = firstOfThree.next;
+        let thirdOfThree = secondOfThree.next;
+        let three = [ firstOfThree.value, secondOfThree.value, thirdOfThree.value ];
+        currentCup.next = thirdOfThree.next;
+        thirdOfThree.next.previous = currentCup;
         
         let destination = currentCup.value - 1;
         while (three.includes(destination) || destination === 0) {
@@ -63,21 +70,36 @@ const task = (cups, cupsCount, repetitions, task) => {
             if (destination === 0) destination = cupsCount;
         }
 
-        let destinationCup = currentCup.next;
+        let destinationCupForwards = currentCup.next;
+        let destinationCupBackwards = currentCup.previous;
+        if (i % 10000 === 0) console.time("searching");
         let searchingSteps = 0;
-        while (destinationCup.value !== destination) {
-            destinationCup = destinationCup.next;
+        while (destinationCupForwards.value !== destination && destinationCupBackwards.value !== destination) {
+            destinationCupForwards = destinationCupForwards.next;
+            destinationCupBackwards = destinationCupBackwards.previous;
             searchingSteps++;
         }
-        console.log("Searching steps", searchingSteps);
+        if (i % 10000 === 0) console.timeEnd("searching");
+        if (i % 10000 === 0) console.log("searching steps", searchingSteps);
 
-        firstOfThree.next.next.next = destinationCup.next;
+        let destinationCup;
+        if (destinationCupForwards.value === destination) {
+            destinationCup = destinationCupForwards;
+        } else if (destinationCupBackwards.value === destination) {
+            destinationCup = destinationCupBackwards;
+        } else console.warn("Error in conditions");
+        //console.log("Searching steps", searchingSteps);
+
+        thirdOfThree.next = destinationCup.next;
+        destinationCup.next.previous = thirdOfThree;
+        
         destinationCup.next = firstOfThree;
+        firstOfThree.previous = destinationCup;
 
         currentCup = currentCup.next;
+        if (i % 10000 === 0) console.log(i + " iteration steps");
         //console.log("Move", (i+2) + ":" )
         //console.log(printCups(currentCup));
-        if (i % 1000 === 0) console.log("Step " + i);
     }
     
     while (currentCup.value !== 1) currentCup = currentCup.next;
@@ -93,16 +115,17 @@ let testdata = `389125467`;
 testdata = prepare(testdata);
 
 
-doEqualTest(task(testdata, 9, 100, 1), "67384529");
+//doEqualTest(task(testdata, 9, 100, 1), "67384529");
 
-console.log("Task 1: " + task(inputdata, 9, 100, 1));
-
-console.log("");
-
-
+//console.log("Task 1: " + task(inputdata, 9, 100, 1));
 
 console.log("");
 
-doEqualTest(task(testdata, 1000000, 10000), 149245887792);
 
-//console.log("Task 2: " + task2(inputdata));
+
+console.log("");
+
+//doEqualTest(task(testdata, 1000000, 100000), 149245887792);
+console.time();
+console.log("Task 2: " + task(inputdata, 1000000, 10000000));
+console.timeEnd();
