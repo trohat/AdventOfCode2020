@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 12: Rain Risk");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 

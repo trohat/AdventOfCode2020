@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 10: Adapter Array");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 

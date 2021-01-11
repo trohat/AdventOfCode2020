@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 14: Docking Data");
 
 String.prototype.count = function(char) {
     return this.split(char).length-1;

@@ -1,4 +1,4 @@
-console.log("script working");
+console.log("AOC 2020 - Day 2: Password Philosophy");
 
 const splitLines = data => data.split(String.fromCharCode(10));
 

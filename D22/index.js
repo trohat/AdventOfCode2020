@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 22: Crab Combat");
 
 const splitLines = (data) => data.split("\n\n");
 

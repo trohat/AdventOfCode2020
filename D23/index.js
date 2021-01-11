@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 23: Crab Cups");
 
 const prepare = data => data.split("").map(d => +d);
 

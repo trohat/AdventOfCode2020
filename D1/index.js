@@ -1,4 +1,4 @@
-console.log("script working");
+console.log("AOC 2018 - Day 1: Report Repair");
 
 const sum = 2020;
 

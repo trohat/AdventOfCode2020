@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 9: Encoding Error");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 

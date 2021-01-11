@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 15: Rambunctious Recitation");
 
 const splitLines = (data) => data.split(",");
 

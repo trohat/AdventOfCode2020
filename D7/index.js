@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 7: Handy Haversacks");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 

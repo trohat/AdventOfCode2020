@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 6: Custom Customs");
 
 const splitLines = (data) => data.split(String.fromCharCode(10)+ String.fromCharCode(10));
 const splitLines2 = (data) => data.split(String.fromCharCode(10)+String.fromCharCode(10)).map(d => d.split(String.fromCharCode(10)));

@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 20: Jurassic Jigsaw");
 
 String.prototype.reverse = function() {
     return this.split("").reverse().join("");

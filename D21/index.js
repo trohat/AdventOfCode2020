@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 21: Allergen Assessment");
 
 Array.prototype.intersection = function() {
     return this.reduce((accumulator, currentArr) => accumulator.filter(x => currentArr.includes(x)), this[0]);

@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 24: Lobby Layout");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 

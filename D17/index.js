@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 17: Conway Cubes");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 

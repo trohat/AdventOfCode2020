@@ -1,4 +1,4 @@
-console.log("funguju");
+console.log("AOC 2020 - Day 25: Combo Breaker");
 
 const splitLines = (data) => data.split(String.fromCharCode(10));
 
