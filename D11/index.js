@@ -5,6 +5,7 @@ const splitLines = (data) => data.split(String.fromCharCode(10));
 inputdata = splitLines(inputdata);
 
 const compareArrays = (arr1, arr2) => {
+    if (arr1.length !== arr2.length) return false;
     let same = true;
     arr1.forEach((field, index) => {
         if (field !== arr2[index]) same = false;
